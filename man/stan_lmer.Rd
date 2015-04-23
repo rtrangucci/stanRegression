@@ -5,7 +5,25 @@
 \title{stan_lmer}
 \usage{
 stan_lmer(fl, data, family = gaussian, prefix = c("b_", "v_"),
-  default_prior = "dnorm(0,10)", matt_trick = TRUE, file_name = NULL, ...)
+  default_prior = "dnorm(0,10)", matt_trick = TRUE, file_name = NULL,
+  run_stan = FALSE, ...)
+}
+\arguments{
+\item{fl}{Formula.}
+
+\item{data}{Data. Must be a \code{data.frame}.}
+
+\item{family}{}
+
+\item{prefix}{}
+
+\item{default_prior}{Default prior for 'fixed effects'.}
+
+\item{matt_trick}{Logical. Use NCP?}
+
+\item{file_name}{Full path for .stan file to be created.}
+
+\item{run_stan}{Logical. Should the model be run in RStan?}
 }
 \description{
 stan_lmer
