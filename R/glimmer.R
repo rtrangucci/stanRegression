@@ -216,7 +216,7 @@ xparse_glimmer_formula <- function( formula , data ) {
 }
 
 
-glimmer <- function( formula , data , family=gaussian , prefix=c("b_","v_") , default_prior="dnorm(0,10)" , matt_trick = TRUE, ... ) {
+glimmer <- function( formula , data , family="gaussian" , prefix=c("b_","v_") , default_prior="dnorm(0,10)" , matt_trick = TRUE, ... ) {
     
     undot <- function( astring ) {
         astring <- gsub( "." , "_" , astring , fixed=TRUE )
@@ -226,30 +226,7 @@ glimmer <- function( formula , data , family=gaussian , prefix=c("b_","v_") , de
         astring
     }
     
-    # convert family to text
-    family.orig <- family
-    if ( class(family)=="function" ) {
-        family <- do.call(family,args=list())
-    }
-    link <- family$link
-    family <- family$family
-    
     # templates
-    family_liks <- list(
-        gaussian = "dnorm( mu , sigma )",
-        binomial = "dbinom( size , p )",
-        poisson = "dpois( lambda )"
-    )
-    lm_names <- list(
-        gaussian = "mu",
-        binomial = "p",
-        poisson = "lambda"
-    )
-    link_names <- list(
-        gaussian = "identity",
-        binomial = "logit",
-        poisson = "log"
-    )
     
     # check input
     if ( class(formula)!="formula" ) stop( "Input must be a glmer-style formula." )
@@ -262,6 +239,31 @@ glimmer <- function( formula , data , family=gaussian , prefix=c("b_","v_") , de
     # parse
     pf <- xparse_glimmer_formula( formula , data )
     pf$yname <- undot(pf$yname)
+
+    if(family == "ordered"){
+      num_cuts <- length(table(pf$y)) - 1
+      ctpts <- concat('c(',paste('a',1:num_cuts,sep='',collapse=','),')')
+    } else {
+      ctpts = ""
+    }
+    family_liks <- list(
+        gaussian = "dnorm(mu , sigma)",
+        binomial = "dbinom(size , p)",
+        poisson = "dpois(lambda)",
+        ordered = concat("dordlogit(eta, ",ctpts,")")
+    )
+    lm_names <- list(
+        gaussian = "mu",
+        binomial = "p",
+        poisson = "lambda",
+        ordered = "eta"
+    )
+    link_names <- list(
+        gaussian = "identity",
+        binomial = "logit",
+        poisson = "log",
+        ordered = "identity"
+    )
     
     # build likelihood
     # check for size variable in Binomial
@@ -351,7 +353,7 @@ glimmer <- function( formula , data , family=gaussian , prefix=c("b_","v_") , de
     
     # insert linear model
     lm_name <- lm_names[[family]]
-    #link_func <- link_names[[family]]
+    link <- link_names[[family]]
     if ( vlm=="" )
         lm_txt <- concat( flm )
     else

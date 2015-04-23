@@ -481,8 +481,7 @@ map2stan.templates <- list(
                 assign( "start" , s , e )
                 # insert explicit type into types list
                 type_list <- get( "types" , e )
-                #type_list[[ cuts_name ]] <- concat( "ordered[" , length(cutpars) , "]" )
-                type_list[[ cuts_name ]] <- "ordered"
+                type_list[[ cuts_name ]] <- concat( "ordered[" , length(cutpars) , "]" )
                 assign( "types" , type_list , e )
                 # rename
                 k[[2]] <- cuts_name
@@ -494,7 +493,7 @@ map2stan.templates <- list(
                 type_list <- get( "types" , e )
                 if ( is.null(type_list[[cuts_name]]) ) {
                     #message(concat("Warning: No explicit type declared for ",cuts_name))
-                    type_list[[ cuts_name ]] <- "ordered"
+                    type_list[[ cuts_name ]] <- concat( "ordered[" , length(cutpars) , "]" )
                     assign( "types" , type_list , e )
                 }
                 k[[2]] <- cuts_name

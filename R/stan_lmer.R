@@ -3,11 +3,11 @@
 #' @export
 #' 
 
-stan_lmer <- function(fl , data , family=gaussian , prefix=c("b_","v_") , default_prior="dnorm(0,10)" , matt_trick = TRUE, file_name=NULL, run_stan = FALSE, ...){
+stan_lmer <- function(formula , data , family=gaussian , prefix=c("b_","v_") , default_prior="dnorm(0,10)" , loc_scale_transform = TRUE, file_name=NULL, run_stan = FALSE, ...){
   if(is.null(file_name)){
     warning("Generated stan code should go into a file with .stan suffix")
   }
-  glim_result <- glimmer(fl , data , family, prefix=c("b_","v_") , default_prior="dnorm(0,10)" , matt_trick)
+  glim_result <- glimmer(formula , data , family, prefix=c("b_","v_") , default_prior="dnorm(0,10)" , matt_trick = loc_scale_transform)
   stan_code <- map2stan(glim_result$f, glim_result$d, sample=FALSE)
   if(!is.null(file_name)){
     filewrite <- file(file_name)
