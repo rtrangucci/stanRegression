@@ -19,7 +19,7 @@ stan_lm <- function(formula, data, prior = "dnorm(0,10)",
                     loc_scale_transform = TRUE,
                     file_name = NULL, run_stan = FALSE, ...) {
 
-  stan_lmer(formula = formula,
+  stan_glmer(formula = formula,
             data = data,
             family = "gaussian",
             default_prior = prior,

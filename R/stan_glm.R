@@ -21,7 +21,7 @@ stan_glm <- function(formula, data, family = "gaussian",
                      loc_scale_transform = TRUE,
                      file_name = NULL, run_stan = FALSE, ...) {
 
-  stan_lmer(formula = formula,
+  stan_glmer(formula = formula,
             data = data,
             family = family,
             default_prior = prior,
