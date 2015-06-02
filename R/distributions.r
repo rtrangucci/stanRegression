@@ -1,6 +1,7 @@
 # distributions
 
-# ordered categorical density functions
+
+# ordered categorical density functions -----------------------------------
 logistic <- function( x ) {
     p <- 1 / ( 1 + exp( -x ) )
     p <- ifelse( x==Inf , 1 , p )
@@ -58,8 +59,9 @@ rordlogit <- function( n , phi=0 , a ) {
     y
 }
 
-# beta density functions parameterized as prob,theta
 
+
+# beta density functions parameterized as prob,theta ----------------------
 dbeta2 <- function( x , prob , theta , log=FALSE ) {
     a <- prob * theta
     b <- (1-prob) * theta
@@ -72,22 +74,23 @@ rbeta2 <- function( n , prob , theta ) {
     rbeta( n , shape1=a , shape2=b )
 }
 
-# Ben Bolker's dbetabinom from emdbook package
-dbetabinom <- function (x, size, prob, theta, shape1, shape2, log = FALSE) 
+
+# Ben Bolker's dbetabinom from emdbook package ----------------------------
+dbetabinom <- function (x, size, prob, theta, shape1, shape2, log = FALSE)
 {
     if (missing(prob) && !missing(shape1) && !missing(shape2)) {
         prob <- shape1/(shape1 + shape2)
         theta <- shape1 + shape2
     }
-    v <- lfactorial(size) - lfactorial(x) - lfactorial(size - 
-        x) - lbeta(theta * (1 - prob), theta * prob) + lbeta(size - 
+    v <- lfactorial(size) - lfactorial(x) - lfactorial(size -
+        x) - lbeta(theta * (1 - prob), theta * prob) + lbeta(size -
         x + theta * (1 - prob), x + theta * prob)
     nonint <- function(x) (abs((x) - floor((x)+0.5)) > 1e-7)
     if (any(n <- nonint(x))) {
         warning("non-integer x detected; returning zero probability")
         v[n] <- -Inf
     }
-    if (log) 
+    if (log)
         v
     else exp(v)
 }
@@ -104,8 +107,9 @@ rbetabinom <- function( n , size, prob, theta, shape1, shape2 ) {
     return(y)
 }
 
-# gamma-poisson functions
 
+
+# gamma-poisson functions -------------------------------------------------
 dgamma2 <- function( x , mu , scale , log=FALSE ) {
     dgamma( x , shape=mu / scale , scale=scale , log=log )
 }
@@ -126,7 +130,8 @@ rgampois <- function( n , mu , scale ) {
     rnbinom( n , size=shape , prob=prob )
 }
 
-# laplace (double exponential)
+
+# laplace (double exponential) --------------------------------------------
 dlaplace <- function(x,location=0,lambda=1,log=FALSE) {
     # f(y) = (1/(2b)) exp( -|y-a|/b )
     # l <- (1/(2*lambda))*exp( -abs(x-location)/lambda )
@@ -143,10 +148,12 @@ rlaplace <- function(n,location=0,lambda=1) {
 }
 
 
-# onion method correlation matrix
+
+# onion method correlation matrix ---------------------------------------
 dlkjcorr <- function( x , eta=1 , log=TRUE ) {
     det(x)^(eta-1)
 }
+
 
 rinvwishart <- function(s,df,Sigma,Prec) {
     #s-by-s Inverse Wishart matrix, df degree of freedom, precision matrix
@@ -173,7 +180,8 @@ log_sum_exp <- function( x ) {
 #    log(ll)
 #}
 
-# zero-inflated poisson distribution
+
+# zero-inflated poisson distribution --------------------------------------
 # this is slow, but accurate
 dzipois <- function(x,p,lambda,log=FALSE) {
     ll <- rep(0,length(x))
@@ -198,7 +206,8 @@ rzipois <- function(n,p,lambda) {
     return(y)
 }
 
-# zero-augmented gamma2 distribution
+
+# zero-augmented gamma2 distribution --------------------------------------
 dzagamma2 <- function(x,prob,mu,scale,log=FALSE) {
     K <- as.data.frame(cbind(x=x,prob=prob,mu=mu,scale=scale))
     llg <- dgamma( x , shape=mu/scale , scale=scale , log=TRUE )
@@ -207,7 +216,8 @@ dzagamma2 <- function(x,prob,mu,scale,log=FALSE) {
     ll
 }
 
-# zero-inflated binomial distribution
+
+# zero-inflated binomial distribution -------------------------------------
 # this is slow, but accurate
 dzibinom <- function(x,p_zero,size,prob,log=FALSE) {
     ll <- rep(0,length(x))
@@ -234,21 +244,22 @@ rzibinom <- function(n,p_zero,size,prob) {
     return(y)
 }
 
-# Student's t, with scale and location parameters
 
+# Student's t, with scale and location parameters -------------------------
 #dstudent <- function( x , nu , mu , sigma , log=TRUE ) {
-#    
+#
 #}
 
-# generalized normal
+
+# generalized normal ------------------------------------------------------
 dgnorm <- function( x , mu , alpha , beta , log=FALSE ) {
     ll <- log(beta) - log( 2*alpha*gamma(1/beta) ) - (abs(x-mu)/alpha)^beta
     if ( log==FALSE ) ll <- exp(ll)
     return(ll)
 }
 
-# categorical distribution for multinomial models
 
+# categorical distribution for multinomial models -------------------------
 dcategorical <- function( x , prob , log=TRUE ) {
     if ( class(prob)=="matrix" ) {
         # vectorized probability matrix

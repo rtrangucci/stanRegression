@@ -1,13 +1,13 @@
 Package: stanRegression
 Type: Package
-Title: Title
+Title: stanRegression
 Version: 0.1.0
 Date: 2015-03-26
 Authors@R: as.person(c(
     "Person1 [aut]",
     "Person2 <person2@email.com> [aut, cre]"
   ))
-Description: Description
+Description: Fit regression models with Stan using familiar lm, glm, and lmer syntax.
 License: GPL (>=3)
 LazyData: TRUE
 Depends: R (>= 3.1.2)
