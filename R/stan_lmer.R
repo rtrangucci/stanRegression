@@ -13,7 +13,7 @@
 #' @export
 #'
 
-stan_lmer <- function(formula, data, family = gaussian, prefix = c("b_","v_"),
+stan_lmer <- function(formula, data, family = "gaussian", prefix = c("b_","v_"),
                       default_prior = "dnorm(0,10)", loc_scale_transform = TRUE,
                       file_name = NULL, run_stan = FALSE, ...) {
   if(is.null(file_name)){
