@@ -11,11 +11,12 @@ flist_untag <- function(flist) {
   as.list(flist)
 }
 
-# check for rstan package -------------------------------------------------
-check_rstan <- function() {
-  ok <- requireNamespace("rstan", quietly = TRUE)
-  msg <- "Please install the RStan package to use this option."
-  if (!ok) stop(msg)
+
+# check for .stan file extension ------------------------------------------
+check_file_name <- function(x) {
+  nc <- nchar(x)
+  ok <- substr(x, nc-4, nc) == ".stan"
+  if (!ok) stop("Generated stan code should go into a file with .stan suffix")
 }
 
 # run rstan  --------------------------------------------------------------
@@ -24,7 +25,9 @@ run_rstan <- function(file, ...) {
   # @param ... other arguments to pass to rstan::stan (e.g. iter, chains, etc)
   # @return stanfit object
 
+  rstan_ok <- requireNamespace("rstan", quietly = TRUE)
+  if (!rstan_ok) stop("Please install the RStan package to use this option.")
   if (missing(file)) stop("'file' must be specified")
-  check_rstan()
+  require("rstan")
   rstan::stan(file = file, ...)
 }
