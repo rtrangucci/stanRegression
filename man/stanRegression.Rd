@@ -6,6 +6,7 @@
 \alias{stanRegression-package}
 \title{stanRegression}
 \description{
-\pkg{stanRegression} does things.
+Fit regression models with Stan using familiar lm, glm,
+and lmer syntax.
 }
 

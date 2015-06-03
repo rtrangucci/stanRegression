@@ -4,7 +4,7 @@
 \alias{stan_lmer}
 \title{stan_lmer}
 \usage{
-stan_lmer(formula, data, family = "gaussian", prefix = c("b_", "v_"),
+stan_lmer(formula, data, prefix = c("b_", "v_"),
   default_prior = "dnorm(0,10)", loc_scale_transform = TRUE,
   file_name = NULL, run_stan = FALSE, ...)
 }
@@ -12,8 +12,6 @@ stan_lmer(formula, data, family = "gaussian", prefix = c("b_", "v_"),
 \item{formula}{Formula (using lmer syntax).}
 
 \item{data}{A \code{data.frame} containing the variables in the model.}
-
-\item{family}{}
 
 \item{prefix}{}
 

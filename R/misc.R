@@ -31,3 +31,8 @@ run_rstan <- function(file, ...) {
   require("rstan")
   rstan::stan(file = file, ...)
 }
+
+
+# is.stanfit --------------------------------------------------------------
+is.stanfit <- function(x) inherits(x, "stanfit")
+
