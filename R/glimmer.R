@@ -247,16 +247,16 @@ glimmer <- function( formula , data , family="gaussian" , prefix=c("b_","v_") , 
       ctpts = ""
     }
     family_liks <- list(
-        gaussian = "dnorm(mu , sigma)",
-        binomial = "dbinom(size , p)",
-        poisson = "dpois(lambda)",
-        ordered = concat("dordlogit(eta, ",ctpts,")")
+        gaussian = "dnorm(theta , sigma)",
+        binomial = "dbinom(size , theta)",
+        poisson = "dpois(theta)",
+        ordered = concat("dordlogit(theta, ",ctpts,")")
     )
     lm_names <- list(
-        gaussian = "mu",
-        binomial = "p",
-        poisson = "lambda",
-        ordered = "eta"
+        gaussian = "theta",
+        binomial = "theta",
+        poisson = "theta",
+        ordered = "theta"
     )
     link_names <- list(
         gaussian = "identity",
@@ -273,11 +273,11 @@ glimmer <- function( formula , data , family="gaussian" , prefix=c("b_","v_") , 
             # cbind input
             pf$dat[[pf$yname]] <- as.integer(pf$y[,1])
             pf$dat[[concat(pf$yname,"_size")]] <- as.integer(apply(pf$y,1,sum))
-            dtext <- concat("dbinom( ",concat(pf$yname,"_size")," , p )")
+            dtext <- concat("dbinom( ",concat(pf$yname,"_size")," , theta )")
         } else {
             # bernoulli
             pf$dat[[pf$yname]] <- pf$y
-            dtext <- concat("dbinom( 1 , p )")
+            dtext <- concat("dbinom( 1 , theta )")
         }
     } else {
         pf$dat[[pf$yname]] <- pf$y

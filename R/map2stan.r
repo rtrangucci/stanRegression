@@ -940,15 +940,17 @@ map2stan <- function( flist , data , start , pars , constraints=list() , types=l
             m_gq <- concat( m_gq , txt1 )
             
             # link function
-            if ( linmod$link != "identity" & linmod$use_link==TRUE ) {
+            if ( linmod$link != "identity") {
                 # check for valid link function
                 if ( is.null( inverse_links[[linmod$link]] ) ) {
                     stop( paste("Link function '",linmod$link,"' not recognized in formula line:\n",deparse(flist[[f_num]]),sep="") )
                 } else {
                     # build it
                     txt1 <- concat( indent,indent , linmod$parameter , "[i] <- " , inverse_links[[linmod$link]] , "(" , linmod$parameter , "[i]);\n" )
-                    m_model_txt <- concat( m_model_txt , txt1 )
-                    m_gq <- concat( m_gq , txt1 )
+                    if(linmod$use_link) {
+                      m_model_txt <- concat( m_model_txt , txt1 )
+                    }
+                      m_gq <- concat( m_gq , txt1 )
                 }
             }
             
